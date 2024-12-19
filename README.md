@@ -5,12 +5,7 @@ For adding sim cards in bulk to the provisioning system for Xtreme.
 Must install all packages in requirements.txt
 (run `pip install -r requirements.txt`)
 
-Must create a .env file in the same directory as main.py containing the following:
-
-```
-API_KEY = ""
-API_URL = ""
-```
+During the first time running the script, it will ask for an API key, which can be created in the admin panel under Tokens. if you need to change the token, it is saved in .env in the root directory
 
 Bulk sim cards must be a csv or xlsx file, containing the following string fields:
 
