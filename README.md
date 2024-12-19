@@ -14,10 +14,10 @@ API_URL = ""
 
 Bulk sim cards must be a csv or xlsx file, containing the following string fields:
 
-`imsi`: 15 digit string
-`ki`: 32 digit string
-`op_opc`: 32 digit string
-`op_type`: either 0 for OPC or 1 for op, string
-`org`: 4 digit organization customer ID, string
+`imsi`: 15 digit string <br>
+`ki`: 32 digit string <br>
+`op_opc`: 32 digit string <br>
+`op_type`: either 0 for OPC or 1 for op, string <br>
+`org`: 4 digit organization customer ID, string <br>
 
 ## Each organization must exist, and must have a proper HNI assignment for the sim card already. Use admin panel for this.
