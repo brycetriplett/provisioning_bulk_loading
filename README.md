@@ -7,7 +7,7 @@ Must install all packages in requirements.txt
 
 During the first time running the script, it will ask for an API key, which can be created in the admin panel under Tokens. if you need to change the token, it is saved in .env in the root directory
 
-Bulk sim cards must be a csv or xlsx file, containing the following string fields:
+Bulk sim cards must be a csv or xlsx file, existing in the same directory as main.py, containing the following string fields:
 
 `imsi`: 15 digit string <br>
 `ki`: 32 digit string <br>
