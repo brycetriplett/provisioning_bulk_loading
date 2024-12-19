@@ -7,8 +7,10 @@ Must install all packages in requirements.txt
 
 Must create a .env file in the same directory as main.py containing the following:
 
-`API_KEY = ""`
-`API_URL = ""`
+```
+API_KEY = ""
+API_URL = ""
+```
 
 Bulk sim cards must be a csv or xlsx file, containing the following string fields:
 
