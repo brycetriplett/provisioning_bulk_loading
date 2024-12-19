@@ -58,7 +58,7 @@ result = requests.post(
     "Authorization": f"Token {api_key}",
     "Content-Type": "application/json"
     },
-    json=df_json
+    data=df_json
 )
 
 # display the result
