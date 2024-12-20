@@ -32,15 +32,15 @@ if not api_key:
 while True:
     user_input = input("Please enter the name of the file you want to load: ")
 
-    if user_input.split('.')[-1] not in ('csv', 'xlsx'):
-        print("Invalid file type. Please enter a valid file type. (csv or xlsx)")
+    if user_input.split('.')[-1] not in ('csv', 'tab', 'xlsx'):
+        print("Invalid file type. Please enter a valid file type. (.csv, .tab, or .xlsx)")
         continue
 
     try:
-        if user_input.split('.')[-1] == 'csv':
-            df = pd.read_csv(user_input, dtype=str)
-        else:
+        if user_input.split('.')[-1] == 'xlsx':
             df = pd.read_excel(user_input, dtype=str)
+        else:
+            df = pd.read_csv(user_input, dtype=str)
 
         break
 
