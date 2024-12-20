@@ -23,7 +23,7 @@ Bulk sim cards must be a csv or xlsx file, existing in this same directory, cont
 To run the script on windows: <br>
 execute `.\run.bat` <br><br>
 
-for linux and mac, the script needs to be made executable first. This needs only needs to be done once. <br>
+for linux and mac, the script needs to be made executable first. This only needs to be done once. <br>
 execute `chmod +x run.sh` <br>
 
 Now you can run the script. <br>
