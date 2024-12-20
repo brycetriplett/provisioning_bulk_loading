@@ -11,7 +11,7 @@ run `python3 install.py` on mac or linux <br>
 When running the install script, it will ask for an API key, which can be created in the admin panel under Tokens. This token must be created for a superuser account to work. if you need to change the token, it is saved in .env in the root directory, or just re-run the install script. <br><br>
 
 
-Bulk sim cards must be a csv or xlsx file, existing in the same directory as main.py, containing the following string fields: <br>
+Bulk sim cards must be a csv or xlsx file, existing in this same directory, containing the following string fields: <br>
 
 `imsi`: 15 digit string <br>
 `ki`: 32 digit string <br>
