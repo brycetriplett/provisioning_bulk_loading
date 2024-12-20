@@ -17,6 +17,7 @@ def install_requirements(venv_dir):
     subprocess.check_call([pip_path, 'install', '-r', 'requirements.txt'])
 
 def install_api_key():
+    """Save the API key to a .env file."""
     with open('.env', 'w') as env_file:
         api_key = input("\nPlease enter your API key: ")
         env_file.write(f"API_KEY={api_key}\n")
