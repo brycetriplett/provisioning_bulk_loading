@@ -1,7 +1,19 @@
-from dotenv import load_dotenv
-import pandas as pd
-import requests
-import os
+# set the API URL. Change this as necessary
+api_url = "http://provisioning.xtremeenterprises.com/api/v1/bulk-load-sim-cards/"
+
+
+# Import the required packages and modules
+try: 
+    from dotenv import load_dotenv
+    import pandas as pd
+    import requests
+    import os
+
+except ImportError as e:
+    print(f"An error occurred: {e}")
+    print("Please run the install.py script to install the required packages.")
+    exit(1)
+
 
 # load or create the API key
 load_dotenv()
@@ -14,10 +26,6 @@ if not api_key:
 
     load_dotenv()
     api_key = os.getenv('API_KEY')
-
-
-# set the API URL
-api_url = "http://provisioning.xtremeenterprises.com/api/v1/bulk-load-sim-cards/"
 
 
 # load the sim card data file
