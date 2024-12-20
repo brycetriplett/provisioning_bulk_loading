@@ -13,6 +13,9 @@ Bulk sim cards must be a csv or xlsx file, existing in the same directory as mai
 `ki`: 32 digit string <br>
 `op_opc`: 32 digit string <br>
 `op_type`: either 0 for OPC or 1 for op, string <br>
-`org`: 4 digit organization customer ID, string <br>
+`org`: 4 digit organization customer ID, string
+
+`python main.py` to execute on windows <br>
+`python3 main.py` to execute on mac or linux
 
 ## Each organization must exist, and must have a proper HNI assignment for the sim card already. Use admin panel for this.
