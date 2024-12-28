@@ -1,5 +1,5 @@
 # set the API URL. Change this as necessary
-api_url = "http://provisioning.xtremeenterprises.com/api/v1/bulk-load-sim-cards/"
+api_url = "https://provisioning.xtremeenterprises.com/api/v1/bulk-load-sim-cards/"
 
 
 # Import the required packages and modules
