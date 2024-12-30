@@ -1,6 +1,7 @@
 # Import the required packages and modules
 try: 
     from dotenv import load_dotenv
+    from pprint import pprint
     import pandas as pd
     import requests
     import urllib3
@@ -122,4 +123,5 @@ result = requests.post(
 )
 
 # display the result
-print(f"{result}\n{result.text}")
+print(result)
+pprint(result.json())
