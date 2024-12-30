@@ -20,7 +20,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
 api_url = os.getenv('PROVISIONING_API_URL')
 api_key = os.getenv('PROVISIONING_API_KEY')
-imsi_field = os.getenv('PROVISIONING_IMSI')
+imsi_field = os.getenv('PROVISIONING_IMSI').lower()
 
 if not all([api_url, api_key, imsi_field]):
     print("Initial configuration not found or incomplete. \
@@ -57,6 +57,10 @@ while True:
     except Exception as e:
         print("An error occurred. Please try again.")
         print(e)
+
+
+# make all column names lowercase
+df.columns = df.columns.str.lower()
 
 
 try:
