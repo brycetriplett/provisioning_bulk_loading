@@ -20,9 +20,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
 api_url = os.getenv('PROVISIONING_API_URL')
 api_key = os.getenv('PROVISIONING_API_KEY')
-imsi_field = os.getenv('PROVISIONING_IMSI')
-ki_field = os.getenv('PROVISIONING_KI')
-op_opc_field = os.getenv('PROVISIONING_OP_OPC')
+imsi_field = os.getenv('PROVISIONING_IMSI').lower()
+ki_field = os.getenv('PROVISIONING_KI').lower()
+op_opc_field = os.getenv('PROVISIONING_OP_OPC').lower()
 
 if not all([api_url, api_key, imsi_field, ki_field, op_opc_field]):
     print("Initial configuration not found or incomplete. \
@@ -59,6 +59,10 @@ while True:
     except Exception as e:
         print("An error occurred. Please try again.")
         print(e)
+
+
+# Convert all column names in the dataframe to lowercase
+df.columns = df.columns.str.lower()
 
 
 # gather the op type
