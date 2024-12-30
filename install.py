@@ -16,14 +16,28 @@ def install_requirements(venv_dir):
     pip_path = os.path.join(venv_dir, 'Scripts', 'pip') if os.name == 'nt' else os.path.join(venv_dir, 'bin', 'pip')
     subprocess.check_call([pip_path, 'install', '-r', 'requirements.txt'])
 
-def install_api_key():
-    """Save the API key to a .env file."""
+def build_env():
+    """generate the initial .env file."""
     with open('.env', 'w') as env_file:
         api_key = input("\nPlease enter your API key: ")
-        env_file.write(f"API_KEY={api_key}\n")
+        env_file.write(f"PROVISIONING_API_KEY={api_key}\n")
+        imsi = input("Please enter the name of the IMSI field you will be using: ")
+        env_file.write(f"PROVISIONING_IMSI={imsi}\n")
+        ki = input("Please enter the name of the KI field you will be using: ")
+        env_file.write(f"PROVISIONING_KI={ki}\n")
+        op_opc = input("Please enter the name of the OP or OPC field you will be using: ")
+        env_file.write(f"PROVISIONING_OP_OPC={op_opc}\n")
+
 
 if __name__ == '__main__':
     venv_dir = create_venv()
     install_requirements(venv_dir)
-    install_api_key()
-    print("\nInstallation complete.")
+    build_env()
+    print(
+        """
+          \n
+          Installation complete. You can now run the main.py script. 
+          If you would like to edit any of the configuration settings, 
+          you can do so by editing the .env file in this directory.
+        """
+    )

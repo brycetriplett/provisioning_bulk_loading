@@ -170,6 +170,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Don't track the csv or xlsx files
+# Don't track individual provisioning files
 *.csv
 *.xlsx
+*.tab
