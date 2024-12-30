@@ -19,6 +19,7 @@ def install_requirements(venv_dir):
 def build_env():
     """generate the initial .env file."""
     with open('.env', 'w') as env_file:
+        env_file.write("PROVISIONING_API_URL=https://provisioning.xtremeenterprises.com/api/v1/bulk-load-sim-cards/\n")
         api_key = input("\nPlease enter your API key: ")
         env_file.write(f"PROVISIONING_API_KEY={api_key}\n")
         imsi = input("Please enter the name of the IMSI field you will be using: ")
@@ -36,7 +37,7 @@ if __name__ == '__main__':
     print(
         """
           \n
-          Installation complete. You can now run the main.py script. 
+          Installation complete. You can now run the script. 
           If you would like to edit any of the configuration settings, 
           you can do so by editing the .env file in this directory.
         """
