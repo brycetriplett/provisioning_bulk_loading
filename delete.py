@@ -20,9 +20,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
 api_url = os.getenv('PROVISIONING_API_URL')
 api_key = os.getenv('PROVISIONING_API_KEY')
-imsi_field = os.getenv('PROVISIONING_IMSI').lower()
 
-if not all([api_url, api_key, imsi_field]):
+if not all([api_url, api_key]):
     print("Initial configuration not found or incomplete. \
           Please run the install.py script to create the .env file with all required variables.")
     exit(1)
@@ -63,21 +62,26 @@ while True:
 df.columns = df.columns.str.lower()
 
 
+# extract the IMSI column from the dataframe
 try:
-    df = df[[imsi_field]]
+    df = df[['imsi']]
 
 except KeyError:
-    print("The configured IMSI column cannot be found. \
-          Please either adjust the column names in the .env file or change the column names in the data.")
+    print("The IMSI column cannot be found in the file. Please ensure that the column is named 'imsi'.")
     exit(1)
 
-imsi_list = df[imsi_field].tolist()
+
+# convert to JSON
+imsi_list = df['imsi'].tolist()
 imsi_json = {"imsi_list": imsi_list}
 
+
+# confirm the deletion
 finalchance = input("Are you sure you want to delete these records? (Y): ")
 if finalchance.lower() != 'y':
     print("Exiting...")
     exit(0)
+
 
 # send the transformed file to the API
 result = requests.delete(
@@ -89,6 +93,7 @@ result = requests.delete(
     json=imsi_json,
     verify=False
 )
+
 
 # display the result
 print(f"{result}\n{result.text}")
