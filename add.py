@@ -5,6 +5,7 @@ try:
     import pandas as pd
     import requests
     import urllib3
+    import sys
     import os
 
 except ImportError as e:
@@ -28,35 +29,42 @@ if not all([api_url, api_key]):
     exit(1)
 
 
-# load the sim card data file
-while True:
+# process the file name provided by the user
+if len(sys.argv) > 2:
+    print("Error: Too many arguments provided. Please provide only the filename as an argument.")
+    exit(1)
+elif len(sys.argv) == 2:
+    user_input = sys.argv[1]
+else:
     user_input = input("Please enter the name of the file you want to load (type q to quit): ")
 
-    try:
-        if user_input.split('.')[-1] == 'xlsx':
-            df = pd.read_excel(user_input, dtype=str)
 
-        elif user_input.split('.')[-1] == 'tab':
-            df = pd.read_csv(user_input, sep='\t', dtype=str)
-            
-        elif user_input.split('.')[-1] == 'csv':
-            df = pd.read_csv(user_input, dtype=str)
+# load the sim card data file
+try:
+    if user_input.split('.')[-1] == 'xlsx':
+        df = pd.read_excel(user_input, dtype=str)
 
-        elif user_input == 'q':
-            exit(0)
+    elif user_input.split('.')[-1] == 'tab':
+        df = pd.read_csv(user_input, sep='\t', dtype=str)
+        
+    elif user_input.split('.')[-1] == 'csv':
+        df = pd.read_csv(user_input, dtype=str)
 
-        else:
-            print("Invalid file type. Please enter a valid file type. (.csv, .tab, or .xlsx)")
-            continue
+    elif user_input == 'q':
+        exit(0)
 
-        break
+    else:
+        print("Invalid file type. Please enter a valid file type. (.csv, .tab, or .xlsx)")
+        exit(1)
 
-    except FileNotFoundError:
-        print("File not found. Please enter a valid file name.")
+except FileNotFoundError:
+    print("File not found. Please enter a valid file name.")
+    exit(1)
 
-    except Exception as e:
-        print("An error occurred. Please try again.")
-        print(e)
+except Exception as e:
+    print("An error occurred. Please try again.")
+    print(e)
+    exit(1)
 
 
 # Convert all column names in the dataframe to lowercase
@@ -118,7 +126,7 @@ df.rename(columns={'customerid': 'organization'}, inplace=True)
 df_json = df.to_json(orient='records')
 
 
-# send the transformed file to the API
+# send the JSON to the API
 result = requests.post(
     api_url,
     headers = {
