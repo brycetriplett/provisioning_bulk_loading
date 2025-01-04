@@ -22,12 +22,6 @@ def build_env():
         env_file.write("PROVISIONING_API_URL=https://provisioning.xtremeenterprises.com/api/v1/bulk-load-sim-cards/\n")
         api_key = input("\nPlease enter your API key: ")
         env_file.write(f"PROVISIONING_API_KEY={api_key}\n")
-        imsi = input("Please enter the name of the IMSI field you will be using: ")
-        env_file.write(f"PROVISIONING_IMSI={imsi}\n")
-        ki = input("Please enter the name of the KI field you will be using: ")
-        env_file.write(f"PROVISIONING_KI={ki}\n")
-        op_opc = input("Please enter the name of the OP or OPC field you will be using: ")
-        env_file.write(f"PROVISIONING_OP_OPC={op_opc}\n")
 
 
 if __name__ == '__main__':

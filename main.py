@@ -21,11 +21,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
 api_url = os.getenv('PROVISIONING_API_URL')
 api_key = os.getenv('PROVISIONING_API_KEY')
-imsi_field = os.getenv('PROVISIONING_IMSI').lower()
-ki_field = os.getenv('PROVISIONING_KI').lower()
-op_opc_field = os.getenv('PROVISIONING_OP_OPC').lower()
 
-if not all([api_url, api_key, imsi_field, ki_field, op_opc_field]):
+if not all([api_url, api_key]):
     print("Initial configuration not found or incomplete. \
           Please run the install.py script to create the .env file with all required variables.")
     exit(1)
@@ -66,48 +63,58 @@ while True:
 df.columns = df.columns.str.lower()
 
 
-# gather the op type
-while True:
-    op_type = input("Are you using OP or OPC? type 0 for OPC or 1 for OP (type q to quit): ")
-
-    if op_type not in ['0', '1']:
-        print("Invalid input. Please enter 0 or 1.")
-
-    elif op_type == 'q':
-        exit(0)
-    
-    else:
-        df['op_code_type'] = op_type
-        break
-
-
-# gather the organization ID
-while True:
-    org_id = input("Please enter the ID of the organization you want to assign the SIM cards to (type q to quit): ")
-
-    if org_id == 'q':
-        exit(0)
-
-    elif len(org_id) == 4 and org_id.isdigit():
-        df['organization'] = org_id
-        break
-        
-    else:
-        print("Invalid input. Please enter a 4-digit integer.")
-
-
-# transform the file and check for correct column names
-try:
-    df = df[[imsi_field, ki_field, op_opc_field, 'op_code_type', 'organization']]
-
-except KeyError:
-    print("One or more of the fields you entered are not present in the file. \
-          Please either adjust the column names in the .env file or change the column names in the data.")
+# gather the op_code_type
+if 'op' not in df.columns and 'opc' not in df.columns:
+    print("Error: Either 'op' or 'opc' column is required.")
     exit(1)
 
+def determine_op_code_type(row):
+    op = row.get('op')
+    opc = row.get('opc')
+    
+    if pd.notna(op) and pd.notna(opc):
+        print("Error: Both 'op' and 'opc' have data for one row.")
+        exit(1)
+    elif pd.notna(op):
+        return "1"
+    elif pd.notna(opc):
+        return "0"
+    else:
+        print("Error: Either 'op' or 'opc' column must have data.")
+        exit(1)
 
-# rename the columns and convert the dataframe to JSON
-df = df.rename(columns={imsi_field: 'imsi', ki_field: 'ki', op_opc_field: 'opc'})
+df['op_code_type'] = df.apply(determine_op_code_type, axis=1)
+
+
+# combine op and opc into one column
+df['opc'] = df.apply(
+    lambda row: row['op'] 
+    if 'op' in row 
+    and pd.notna(row['op']) 
+    else row['opc'], axis=1
+)
+
+
+# check for the presence of the required fields, and ensure they are the correct format
+required_fields = {
+    'imsi': lambda x: x.isdigit() and len(x) == 15,
+    'ki': lambda x: len(x) == 32,
+    'opc': lambda x: len(x) == 32,
+    'customerid': lambda x: x.isdigit() and len(x) == 4
+}
+
+for field, check in required_fields.items():
+    if field not in df.columns:
+        print(f"Error: Required field '{field}' is missing.")
+        exit(1)
+    if not df[field].apply(check).all():
+        print(f"Error: Field '{field}' has invalid data.")
+        exit(1)
+
+
+# Convert the dataframe to JSON
+df = df[['imsi', 'ki', 'opc', 'op_code_type', 'customerid']]
+df.rename(columns={'customerid': 'organization'}, inplace=True)
 df_json = df.to_json(orient='records')
 
 
@@ -121,6 +128,7 @@ result = requests.post(
     data=df_json,
     verify=False
 )
+
 
 # display the result
 print(result)
